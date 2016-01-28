@@ -31,6 +31,9 @@
     for (int i=0; i<3; i++) {
         UIView *view = [[UIView alloc] init];
         view.backgroundColor=[UIColor colorWithRed:NUM green:NUM blue:NUM alpha:1.0f];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake( 30, 40, 150, 20)];
+        label.text = [NSString stringWithFormat:@"这是第%d个view",i];
+        [view addSubview:label];
         [viewArr addObject:view];
     }
     seg.viewsArr = viewArr;
