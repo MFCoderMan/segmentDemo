@@ -87,9 +87,9 @@ ZYGSegment *segment;
         }];
         selectedIndex=index;
         if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSegmentAtIndex:)]) {
-            if (self.viewsArr && self.viewsArr.count) {
+            if (self.segSubviews && self.segSubviews.count) {
                 for (int i=0; i<=index; i++) {
-                    UIView *view = self.viewsArr[i];
+                    UIView *view = self.segSubviews[i];
                     if (i != index) {
                         [view removeFromSuperview];
                     }else{
@@ -98,6 +98,16 @@ ZYGSegment *segment;
                         }
                         
                         [backView addSubview:view];
+                    }
+                }
+            }else if (self.segSubControllers && self.segSubControllers.count){
+                for (int i=0; i<self.segSubControllers.count; i++) {
+                    UIViewController *vController = self.segSubControllers[i];
+                    if (i != index) {
+                        [vController.view removeFromSuperview];
+                    }else{
+                        vController.view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+                        [backView addSubview:vController.view];
                     }
                 }
             }
@@ -123,7 +133,8 @@ ZYGSegment *segment;
         [self addObserver:self forKeyPath:@"selectColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"selectColor"];
         [self addObserver:self forKeyPath:@"titleFont" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleFont"];
         [self addObserver:self forKeyPath:@"lineColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"lineColor"];
-        [self addObserver:self forKeyPath:@"viewsArr" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"viewsArr"];
+        [self addObserver:self forKeyPath:@"segSubviews" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"viewsArr"];
+        [self addObserver:self forKeyPath:@"segSubControllers" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"subControllers"];
     }
     return self;
 }
@@ -138,13 +149,18 @@ ZYGSegment *segment;
         [lineView setBackgroundColor:self.lineColor];
     }
     if ([cate isEqualToString:@"viewsArr"]) {
-        UIView *selectedView = self.viewsArr[0];
+        UIView *selectedView = self.segSubviews[0];
         [backView addSubview:selectedView];
-        kDLOG(@"%f",selectedView.frame.size.height);
         if (!selectedView.frame.size.height) {
             selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
         }
         
+    }
+    if ([cate isEqualToString:@"subControllers"]) {
+        UIViewController *vController = self.segSubControllers[0];
+        UIView *selectedView = vController.view;
+        selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+        [backView addSubview:selectedView];
     }
     for (UIButton *button in self.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {

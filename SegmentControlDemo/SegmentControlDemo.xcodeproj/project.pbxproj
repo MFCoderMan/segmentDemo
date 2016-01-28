@@ -16,6 +16,10 @@
 		024782B11C562E8D00A136B4 /* SegmentControlDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 024782B01C562E8D00A136B4 /* SegmentControlDemoTests.m */; };
 		024782BC1C562E8D00A136B4 /* SegmentControlDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 024782BB1C562E8D00A136B4 /* SegmentControlDemoUITests.m */; };
 		024782D11C562FC800A136B4 /* ZYGSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 024782D01C562FC800A136B4 /* ZYGSegment.m */; };
+		02A551E21C59B7FA00D6AD49 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E11C59B7FA00D6AD49 /* BaseViewController.m */; };
+		02A551E51C59B82100D6AD49 /* ViewController0.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E41C59B82100D6AD49 /* ViewController0.m */; };
+		02A551E81C59B83100D6AD49 /* ViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E71C59B83100D6AD49 /* ViewController1.m */; };
+		02A551EB1C59B83B00D6AD49 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551EA1C59B83B00D6AD49 /* ViewController2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +58,14 @@
 		024782BD1C562E8D00A136B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		024782CF1C562FC800A136B4 /* ZYGSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYGSegment.h; sourceTree = "<group>"; };
 		024782D01C562FC800A136B4 /* ZYGSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYGSegment.m; sourceTree = "<group>"; };
+		02A551E01C59B7FA00D6AD49 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
+		02A551E11C59B7FA00D6AD49 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		02A551E31C59B82100D6AD49 /* ViewController0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController0.h; sourceTree = "<group>"; };
+		02A551E41C59B82100D6AD49 /* ViewController0.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController0.m; sourceTree = "<group>"; };
+		02A551E61C59B83100D6AD49 /* ViewController1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController1.h; sourceTree = "<group>"; };
+		02A551E71C59B83100D6AD49 /* ViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController1.m; sourceTree = "<group>"; };
+		02A551E91C59B83B00D6AD49 /* ViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController2.h; sourceTree = "<group>"; };
+		02A551EA1C59B83B00D6AD49 /* ViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +116,7 @@
 		024782951C562E8D00A136B4 /* SegmentControlDemo */ = {
 			isa = PBXGroup;
 			children = (
+				02A551DF1C59B6FF00D6AD49 /* ViewControllers */,
 				024782991C562E8D00A136B4 /* AppDelegate.h */,
 				0247829A1C562E8D00A136B4 /* AppDelegate.m */,
 				0247829C1C562E8D00A136B4 /* ViewController.h */,
@@ -143,6 +156,21 @@
 				024782BD1C562E8D00A136B4 /* Info.plist */,
 			);
 			path = SegmentControlDemoUITests;
+			sourceTree = "<group>";
+		};
+		02A551DF1C59B6FF00D6AD49 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				02A551E01C59B7FA00D6AD49 /* BaseViewController.h */,
+				02A551E11C59B7FA00D6AD49 /* BaseViewController.m */,
+				02A551E31C59B82100D6AD49 /* ViewController0.h */,
+				02A551E41C59B82100D6AD49 /* ViewController0.m */,
+				02A551E61C59B83100D6AD49 /* ViewController1.h */,
+				02A551E71C59B83100D6AD49 /* ViewController1.m */,
+				02A551E91C59B83B00D6AD49 /* ViewController2.h */,
+				02A551EA1C59B83B00D6AD49 /* ViewController2.m */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,9 +304,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				0247829E1C562E8D00A136B4 /* ViewController.m in Sources */,
+				02A551E81C59B83100D6AD49 /* ViewController1.m in Sources */,
+				02A551E21C59B7FA00D6AD49 /* BaseViewController.m in Sources */,
 				024782D11C562FC800A136B4 /* ZYGSegment.m in Sources */,
 				0247829B1C562E8D00A136B4 /* AppDelegate.m in Sources */,
+				02A551EB1C59B83B00D6AD49 /* ViewController2.m in Sources */,
 				024782981C562E8D00A136B4 /* main.m in Sources */,
+				02A551E51C59B82100D6AD49 /* ViewController0.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,6 +534,7 @@
 				024782C21C562E8D00A136B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		024782C31C562E8D00A136B4 /* Build configuration list for PBXNativeTarget "SegmentControlDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -510,6 +543,7 @@
 				024782C51C562E8D00A136B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		024782C61C562E8D00A136B4 /* Build configuration list for PBXNativeTarget "SegmentControlDemoUITests" */ = {
 			isa = XCConfigurationList;
@@ -518,6 +552,7 @@
 				024782C81C562E8D00A136B4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -44,7 +44,11 @@
 /**
  *  每个item对应个view
  */
-@property (nonatomic,strong ) NSMutableArray *viewsArr;
+@property (nonatomic,strong ) NSMutableArray *segSubviews;
+/**
+ *  子控制器  viewsArr与subControllers只能设置一个
+ */
+@property (nonatomic,strong ) NSMutableArray *segSubControllers;
 /**
  *  segment的背景色，不设置的话回采用默认值
  */
