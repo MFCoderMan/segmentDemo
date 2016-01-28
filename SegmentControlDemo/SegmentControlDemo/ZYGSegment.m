@@ -6,17 +6,17 @@
 //  Copyright © 2016年 ZhangYunguang. All rights reserved.
 //
 
-
 #import "ZYGSegment.h"
 
 @interface ZYGSegment ()
 {
-    UIView *backView;
+    UIView *backView;//segment添加到的view
     CGFloat titleWidth;
     UIView* lineView;
-//    NSInteger selectedIndex;
+    NSInteger selectedIndex;
     int itemCount;
     int buttonTag;
+    CGRect tempFrame;//保存segment的frame
 }
 @end
 
@@ -41,6 +41,7 @@ ZYGSegment *segment;
 #pragma mark - 供外部调用的方法
 -(void)addItems:(NSArray *)items frame:(CGRect)frame inView:(UIView *)view{
     backView = view;
+    tempFrame = frame;
     segment.frame = frame;
     [segment AddItems:items];
     [view addSubview:segment];
@@ -68,8 +69,6 @@ ZYGSegment *segment;
         [self addSubview:button];
         [self.itemArray addObject:button];
     }
-//    [self.itemArray[self.selectedIndex] setSelected:YES];
-//    lineView.
     [[self.itemArray firstObject] setSelected:YES];
 }
 -(void)changeTheSegment:(UIButton*)button
@@ -80,15 +79,29 @@ ZYGSegment *segment;
 #pragma mark - 选中下标，供外部调用
 - (void)selectIndex:(NSInteger)index
 {
-    if (self.selectedIndex!=index) {
-        [self.itemArray[self.selectedIndex] setSelected:NO];
+    if (selectedIndex!=index) {
+        [self.itemArray[selectedIndex] setSelected:NO];
         [self.itemArray[index] setSelected:YES];
         [UIView animateWithDuration:self.duration ? self.duration: 0.5 animations:^{
             [lineView setFrame:CGRectMake(index*titleWidth,self.bounds.size.height-2, titleWidth, 2)];
         }];
-        self.selectedIndex=index;
+        selectedIndex=index;
         if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSegmentAtIndex:)]) {
-            [self.delegate didSelectSegmentAtIndex:self.selectedIndex];
+            if (self.viewsArr && self.viewsArr.count) {
+                for (int i=0; i<=index; i++) {
+                    UIView *view = self.viewsArr[i];
+                    if (i != index) {
+                        [view removeFromSuperview];
+                    }else{
+                        if (!view.frame.size.height){
+                            view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+                        }
+                        
+                        [backView addSubview:view];
+                    }
+                }
+            }
+            [self.delegate didSelectSegmentAtIndex:selectedIndex];
         }else{
             kDLOG(@"代理未实现方法");
         }
@@ -99,7 +112,7 @@ ZYGSegment *segment;
 {
     if (self = [super initWithFrame:frame]) {
         self.itemArray=[NSMutableArray array];
-        self.selectedIndex=1;
+        selectedIndex=0;
         self.titleFont=[UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
         self.segmentBackgroundColor=[UIColor colorWithRed:253.0f/255 green:239.0f/255 blue:230.0f/255 alpha:1.0f];
         self.titleColor=[UIColor colorWithRed:77.0/255 green:77.0/255 blue:77.0/255 alpha:1.0f];
@@ -110,6 +123,7 @@ ZYGSegment *segment;
         [self addObserver:self forKeyPath:@"selectColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"selectColor"];
         [self addObserver:self forKeyPath:@"titleFont" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleFont"];
         [self addObserver:self forKeyPath:@"lineColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"lineColor"];
+        [self addObserver:self forKeyPath:@"viewsArr" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"viewsArr"];
     }
     return self;
 }
@@ -122,6 +136,15 @@ ZYGSegment *segment;
     }
     if ([cate isEqualToString:@"lineColor"]) {
         [lineView setBackgroundColor:self.lineColor];
+    }
+    if ([cate isEqualToString:@"viewsArr"]) {
+        UIView *selectedView = self.viewsArr[0];
+        [backView addSubview:selectedView];
+        kDLOG(@"%f",selectedView.frame.size.height);
+        if (!selectedView.frame.size.height) {
+            selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+        }
+        
     }
     for (UIButton *button in self.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {
@@ -140,10 +163,11 @@ ZYGSegment *segment;
 #pragma mark - 移除观察者
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"segmentBackgroundColor" context:nil];
-    [self removeObserver:self forKeyPath:@"titleColor" context:nil];
-    [self removeObserver:self forKeyPath:@"selectColor" context:nil];
-    [self removeObserver:self forKeyPath:@"titleFont" context:nil];
+    [self removeObserver:self forKeyPath:@"segmentBackgroundColor" context:@"segmentBackgroundColor"];
+    [self removeObserver:self forKeyPath:@"titleColor" context:@"titleColor"];
+    [self removeObserver:self forKeyPath:@"selectColor" context:@"selectColor"];
+    [self removeObserver:self forKeyPath:@"titleFont" context:@"titleFont"];
+    [self removeObserver:self forKeyPath:@"viewsArr" context:@"viewsArr"];
 }
 
 #pragma mark - 添加手势

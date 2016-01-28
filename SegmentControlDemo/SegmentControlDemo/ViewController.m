@@ -9,8 +9,12 @@
 #import "ViewController.h"
 #import "ZYGSegment.h"
 
-@interface ViewController ()<ZYGSegmentControlDelegate>
+#define NUM arc4random()%256/255.0f
 
+@interface ViewController ()<ZYGSegmentControlDelegate>
+{
+    NSMutableArray *viewArr;
+}
 @end
 
 @implementation ViewController
@@ -23,17 +27,24 @@
     seg.delegate = self;
     [seg addItems:@[@"标题0",@"标题1",@"标题2"] frame:CGRectMake(0, 64, self.view.frame.size.width, 34) inView:self.view];
     
-    
+    viewArr = [[NSMutableArray alloc] init];
+    for (int i=0; i<3; i++) {
+        UIView *view = [[UIView alloc] init];
+        view.backgroundColor=[UIColor colorWithRed:NUM green:NUM blue:NUM alpha:1.0f];
+        [viewArr addObject:view];
+    }
+    seg.viewsArr = viewArr;
     seg.segmentBackgroundColor = [UIColor whiteColor];
     seg.titleColor = [UIColor blueColor];
     seg.selectColor = [UIColor redColor];
     seg.titleFont = [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
     seg.lineColor = [UIColor blackColor];
     seg.duration = 0.3;
+    
 }
 
--(void)didSelectSegmentAtIndex:(NSInteger)selection{
-    kDLOG(@"选中%ld",selection);
+-(void)didSelectSegmentAtIndex:(NSInteger)selectedIndex{
+    kDLOG(@"%ld",selectedIndex);
 }
 
 - (void)didReceiveMemoryWarning {

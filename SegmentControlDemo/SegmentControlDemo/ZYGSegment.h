@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #ifdef DEBUG
-#define kDLOG(FORMAT, ...) fprintf(stderr,"%s: %d\t  %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
+#define kDLOG(FORMAT, ...) fprintf(stderr,"%s: %d\t %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
 #define NSLog(...)  NSLog(__VA_ARGS__)
 #else
 #define kDLOG(...)
@@ -41,10 +41,10 @@
  *  标题  ，目前仅支持字符串，暂时未考虑图片
  */
 @property (nonatomic,strong ) NSMutableArray * itemArray;
-///**
-// *  设置初始选中的标题，默认为0    待实现
-// */
-@property (nonatomic,assign ) NSInteger selectedIndex;
+/**
+ *  每个item对应个view
+ */
+@property (nonatomic,strong ) NSMutableArray *viewsArr;
 /**
  *  segment的背景色，不设置的话回采用默认值
  */
