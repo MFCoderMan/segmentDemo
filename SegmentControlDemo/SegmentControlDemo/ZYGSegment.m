@@ -31,11 +31,8 @@ ZYGSegment *segment;
     return self;
 }
 #pragma mark - 单例
-+(instancetype )shared{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        segment = [[self alloc] init];
-    });
++(instancetype )initSegment{
+    segment = [[self alloc] init];
     return segment;
 }
 #pragma mark - 供外部调用的方法

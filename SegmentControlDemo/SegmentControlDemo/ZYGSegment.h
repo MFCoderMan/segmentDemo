@@ -8,18 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+
 #ifdef DEBUG
-#define kDLOG(FORMAT, ...) fprintf(stderr,"%s: %d\t %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
+#define kDLOG(FORMAT, ...) fprintf(stderr,"%s: %d\t  %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
 #define NSLog(...)  NSLog(__VA_ARGS__)
 #else
 #define kDLOG(...)
 #define NSLog(...)
 #endif
-
-
-#define kScreen_height  [[UIScreen mainScreen] bounds].size.height
-#define kScreen_width   [[UIScreen mainScreen] bounds].size.width
-
 /**
  *  定义的协议
  */
@@ -78,7 +74,7 @@
  *
  *  @return ZYGSegment对象
  */
-+(instancetype )shared;
++(instancetype )initSegment;
 /**
  *  要添加的items
  *

@@ -27,7 +27,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     //创建segment
-    ZYGSegment *seg = [ZYGSegment shared];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
+    view.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:view];
+    ZYGSegment *seg = [ZYGSegment initSegment];
     seg.delegate = self;
     [seg addItems:@[@"标题0",@"标题1",@"标题2"] frame:CGRectMake(0, 64, self.view.frame.size.width, 34) inView:self.view];
     
