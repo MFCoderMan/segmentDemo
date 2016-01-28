@@ -184,6 +184,7 @@ ZYGSegment *segment;
     [self removeObserver:self forKeyPath:@"selectColor" context:@"selectColor"];
     [self removeObserver:self forKeyPath:@"titleFont" context:@"titleFont"];
     [self removeObserver:self forKeyPath:@"viewsArr" context:@"viewsArr"];
+    [self removeObserver:self forKeyPath:@"subControllers" context:@"subControllers"];
 }
 
 #pragma mark - 添加手势
