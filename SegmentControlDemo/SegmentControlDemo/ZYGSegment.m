@@ -23,6 +23,7 @@
 @implementation ZYGSegment
 
 ZYGSegment *segment;
+#pragma mark - 初始化
 -(instancetype )init{
     if (self = [super init]) {
         //额外的操作
@@ -30,7 +31,7 @@ ZYGSegment *segment;
     }
     return self;
 }
-#pragma mark - 单例
+
 +(instancetype )initSegment{
     segment = [[self alloc] init];
     return segment;
@@ -40,12 +41,12 @@ ZYGSegment *segment;
     backView = view;
     tempFrame = frame;
     segment.frame = frame;
-    [segment AddItems:items];
+    [segment addItems:items];
     [view addSubview:segment];
     [self addSwipGestureIn:view];
 }
 #pragma mark - 添加标题
--(void)AddItems:(NSArray *)items
+-(void)addItems:(NSArray *)items
 {
     NSInteger seugemtNumber=items.count;
     itemCount = (int) seugemtNumber;
@@ -74,8 +75,7 @@ ZYGSegment *segment;
     buttonTag = (int)button.tag;
 }
 #pragma mark - 选中下标，供外部调用
-- (void)selectIndex:(NSInteger)index
-{
+- (void)selectIndex:(NSInteger)index{
     if (selectedIndex!=index) {
         [self.itemArray[selectedIndex] setSelected:NO];
         [self.itemArray[index] setSelected:YES];
@@ -104,7 +104,11 @@ ZYGSegment *segment;
                         [vController.view removeFromSuperview];
                     }else{
                         vController.view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+                        UIViewController *addedController = [self getController];
+                        [addedController addChildViewController:vController];
+                        [vController didMoveToParentViewController:addedController];
                         [backView addSubview:vController.view];
+                        
                     }
                 }
             }
@@ -113,6 +117,14 @@ ZYGSegment *segment;
             kDLOG(@"代理未实现方法");
         }
     }
+}
+#pragma mark - 获得把segment添加到界面的controller
+-(UIViewController *)getController{
+    UIResponder *responder = backView.nextResponder;
+    while (![responder isKindOfClass:[UIViewController class]]) {
+        responder = responder.nextResponder;
+    }
+    return (UIViewController *)responder;
 }
 #pragma mark - 初始化
 -(instancetype)initWithFrame:(CGRect)frame
@@ -208,26 +220,5 @@ ZYGSegment *segment;
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 @end

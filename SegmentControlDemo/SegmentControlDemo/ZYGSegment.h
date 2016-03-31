@@ -21,10 +21,11 @@
  */
 @protocol ZYGSegmentControlDelegate< NSObject>
 /**
- *  创建segment的类需要实现的协议
+ *  创建segment的类需要实现的协议方法，可选
  *
  *  @param selection 选中的下标
  */
+@optional
 -(void)didSelectSegmentAtIndex:(NSInteger)selectedIndex;
 @end
 
@@ -32,35 +33,35 @@
 /**
  *  当前类的代理对象，把要实现选择segment的类的对象设置成代理
  */
-@property (nonatomic,strong ) id <ZYGSegmentControlDelegate> delegate;
+@property (nonatomic, assign) id <ZYGSegmentControlDelegate> delegate;
 /**
  *  标题  ，目前仅支持字符串，暂时未考虑图片
  */
-@property (nonatomic,strong ) NSMutableArray * itemArray;
+@property (nonatomic, strong) NSMutableArray *itemArray;
 /**
  *  每个item对应个view
  */
-@property (nonatomic,strong ) NSMutableArray *segSubviews;
+@property (nonatomic, strong) NSMutableArray *segSubviews;
 /**
  *  子控制器  viewsArr与subControllers只能设置一个
  */
-@property (nonatomic,strong ) NSMutableArray *segSubControllers;
+@property (nonatomic, strong) NSMutableArray *segSubControllers;
 /**
  *  segment的背景色，不设置的话回采用默认值
  */
-@property (strong,nonatomic ) UIColor * segmentBackgroundColor;
+@property (strong, nonatomic) UIColor *segmentBackgroundColor;
 /**
  *  segment的字体颜色，不设置的话采用默认值
  */
-@property (strong,nonatomic ) UIColor * titleColor;
+@property (strong, nonatomic) UIColor *titleColor;
 /**
  *  segment选中时的字体颜色，不设置的话采用默认值
  */
-@property (strong,nonatomic ) UIColor * selectColor;
+@property (strong, nonatomic) UIColor *selectColor;
 /**
  *  segment标题的字体，不设置的采用默认值
  */
-@property (strong,nonatomic ) UIFont  * titleFont;
+@property (strong, nonatomic) UIFont  *titleFont;
 /**
  *  segment的下划线的颜色，不设置的采用默认的红色
  */
@@ -68,7 +69,7 @@
 /**
  *  segment下划线动画的时间，不设置的话默认0.5s
  */
-@property (assign,nonatomic) CGFloat duration;
+@property (assign, nonatomic) CGFloat duration;
 /**
  *  创建segment单例
  *
@@ -83,5 +84,6 @@
  *  @param view  segment要添加的view
  */
 -(void)addItems:(NSArray *)items frame:(CGRect )frame inView:(UIView *)view;
+
 
 @end

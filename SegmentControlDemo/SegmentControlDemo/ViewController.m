@@ -26,11 +26,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    //创建segment
     
+    NSLog(@"viewController:%@",self);
+    
+    //假设这是导航栏
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
     view.backgroundColor = [UIColor orangeColor];
     [self.view addSubview:view];
+    
+    //创建segment
     ZYGSegment *seg = [ZYGSegment initSegment];
     seg.delegate = self;
     [seg addItems:@[@"标题0",@"标题1",@"标题2"] frame:CGRectMake(0, 64, self.view.frame.size.width, 34) inView:self.view];
@@ -60,19 +64,29 @@
     ViewController1 *v1 = [[ViewController1 alloc] init];
     ViewController2 *v2 = [[ViewController2 alloc] init];
     
+    //设置将viewcontroller添加到的controller
+    v0.upController = self;
+    v1.upController = self;
+    v2.upController = self;
     
+    //为controller添加导航
+    UINavigationController *nav0 = [[UINavigationController alloc] initWithRootViewController:v0];
+    UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:v1];
+    UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:v2];
     
-    controllerArr = [NSMutableArray arrayWithArray:@[v0,v1,v2]];
+//    controllerArr = [NSMutableArray arrayWithArray:@[v0,v1,v2]];
+    controllerArr = [NSMutableArray arrayWithArray:@[nav0,nav1,nav2]];
     seg.segSubControllers = controllerArr;
     
 #endif
-    //对segment属性自定义，不设置的话采用默认属性
+    //对segment属性自定义，可选，不设置的话采用默认属性
     seg.segmentBackgroundColor = [UIColor whiteColor];
     seg.titleColor = [UIColor blueColor];
     seg.selectColor = [UIColor redColor];
     seg.titleFont = [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
     seg.lineColor = [UIColor blackColor];
     seg.duration = 0.3;
+    
     
 }
 

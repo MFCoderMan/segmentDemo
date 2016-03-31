@@ -16,6 +16,7 @@
 		024782B11C562E8D00A136B4 /* SegmentControlDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 024782B01C562E8D00A136B4 /* SegmentControlDemoTests.m */; };
 		024782BC1C562E8D00A136B4 /* SegmentControlDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 024782BB1C562E8D00A136B4 /* SegmentControlDemoUITests.m */; };
 		024782D11C562FC800A136B4 /* ZYGSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 024782D01C562FC800A136B4 /* ZYGSegment.m */; };
+		024851351CABB6AB00FBE326 /* PushedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 024851341CABB6AB00FBE326 /* PushedViewController.m */; };
 		02A551E21C59B7FA00D6AD49 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E11C59B7FA00D6AD49 /* BaseViewController.m */; };
 		02A551E51C59B82100D6AD49 /* ViewController0.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E41C59B82100D6AD49 /* ViewController0.m */; };
 		02A551E81C59B83100D6AD49 /* ViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E71C59B83100D6AD49 /* ViewController1.m */; };
@@ -58,6 +59,8 @@
 		024782BD1C562E8D00A136B4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		024782CF1C562FC800A136B4 /* ZYGSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZYGSegment.h; sourceTree = "<group>"; };
 		024782D01C562FC800A136B4 /* ZYGSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZYGSegment.m; sourceTree = "<group>"; };
+		024851331CABB6AB00FBE326 /* PushedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushedViewController.h; sourceTree = "<group>"; };
+		024851341CABB6AB00FBE326 /* PushedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushedViewController.m; sourceTree = "<group>"; };
 		02A551E01C59B7FA00D6AD49 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		02A551E11C59B7FA00D6AD49 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		02A551E31C59B82100D6AD49 /* ViewController0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController0.h; sourceTree = "<group>"; };
@@ -169,6 +172,8 @@
 				02A551E71C59B83100D6AD49 /* ViewController1.m */,
 				02A551E91C59B83B00D6AD49 /* ViewController2.h */,
 				02A551EA1C59B83B00D6AD49 /* ViewController2.m */,
+				024851331CABB6AB00FBE326 /* PushedViewController.h */,
+				024851341CABB6AB00FBE326 /* PushedViewController.m */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -311,6 +316,7 @@
 				02A551EB1C59B83B00D6AD49 /* ViewController2.m in Sources */,
 				024782981C562E8D00A136B4 /* main.m in Sources */,
 				02A551E51C59B82100D6AD49 /* ViewController0.m in Sources */,
+				024851351CABB6AB00FBE326 /* PushedViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

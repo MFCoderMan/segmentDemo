@@ -22,6 +22,18 @@
     [self.view addSubview:label1];
 }
 
+-(void)pushToNextController{
+    PushedViewController *push = [[PushedViewController alloc] init];
+#if 1
+    [self.navigationController pushViewController:push animated:YES];
+#elif 0
+    [self presentViewController:push animated:YES completion:nil];
+#elif 0
+    NSLog(@"%@",self.upController);
+    [self.upController.navigationController pushViewController:push animated:YES];
+#endif
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

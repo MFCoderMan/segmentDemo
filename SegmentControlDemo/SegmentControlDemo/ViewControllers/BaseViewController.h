@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ViewController.h"
+#import "PushedViewController.h"
 
 @interface BaseViewController : UIViewController
+
+@property (nonatomic, strong) ViewController *upController;
 
 @end
