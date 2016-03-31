@@ -47,7 +47,7 @@
     * */
     
     //设置各个item对应的view,view可以设置frame，也可以不设置，不设置的话默认为从item的下面开始填充整个屏幕
-#if 0
+#if 1
     viewArr = [[NSMutableArray alloc] init];
     for (int i=0; i<3; i++) {
         UIView *view = [[UIView alloc] init];
@@ -80,12 +80,12 @@
     
 #endif
     //对segment属性自定义，可选，不设置的话采用默认属性
-    seg.segmentBackgroundColor = [UIColor whiteColor];
-    seg.titleColor = [UIColor blueColor];
-    seg.selectColor = [UIColor redColor];
-    seg.titleFont = [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
-    seg.lineColor = [UIColor blackColor];
-    seg.duration = 0.3;
+//    seg.segmentBackgroundColor = [UIColor whiteColor];
+//    seg.titleColor = [UIColor blueColor];
+//    seg.selectColor = [UIColor redColor];
+//    seg.titleFont = [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
+//    seg.lineColor = [UIColor blackColor];
+//    seg.duration = 0.3;
     
     
 }

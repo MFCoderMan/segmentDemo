@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-
 #ifdef DEBUG
 #define kDLOG(FORMAT, ...) fprintf(stderr,"%s: %d\t  %s\n",[[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String])
 #define NSLog(...)  NSLog(__VA_ARGS__)
@@ -33,17 +32,17 @@
 /**
  *  当前类的代理对象，把要实现选择segment的类的对象设置成代理
  */
-@property (nonatomic, assign) id <ZYGSegmentControlDelegate> delegate;
+@property (nonatomic, weak) id <ZYGSegmentControlDelegate> delegate;
 /**
  *  标题  ，目前仅支持字符串，暂时未考虑图片
  */
 @property (nonatomic, strong) NSMutableArray *itemArray;
 /**
- *  每个item对应个view
+ *  一一对应于点击每个item时显示的view
  */
 @property (nonatomic, strong) NSMutableArray *segSubviews;
 /**
- *  子控制器  viewsArr与subControllers只能设置一个
+ *  子控制器  segSubviews与subControllers只能设置一个,或者均不设置
  */
 @property (nonatomic, strong) NSMutableArray *segSubControllers;
 /**
@@ -71,7 +70,7 @@
  */
 @property (assign, nonatomic) CGFloat duration;
 /**
- *  创建segment单例
+ *  创建segment，每次均会返回一个新的ZYGSegment对象，以便于实现segment的嵌套使用
  *
  *  @return ZYGSegment对象
  */

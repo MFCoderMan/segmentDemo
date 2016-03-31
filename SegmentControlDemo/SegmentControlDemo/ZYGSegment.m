@@ -7,6 +7,26 @@
 //
 
 #import "ZYGSegment.h"
+/******************************************
+ *                                        *
+ *        以下为默认值，可以直接在此修改       *
+ *                                        *
+ ******************************************
+ */
+//默认值：item背景色
+#define kSegmentBackgroundColor    [UIColor colorWithRed:253.0f/255 green:239.0f/255 blue:230.0f/255 alpha:1.0f]
+//默认值：未选中时字体的颜色
+#define  kTitleColor      [UIColor colorWithRed:77.0/255 green:77.0/255 blue:77.0/255 alpha:1.0f]
+//默认值：选中时字体的颜色
+#define  kSelectedColor   [UIColor colorWithRed:33.0/255 green:97.0/255 blue:31.0/255 alpha:1.0f]
+//默认值：字体的大小
+#define kTitleFont        [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f]
+//默认值：下划线颜色
+#define kDefaultLineColor   [UIColor redColor]
+//默认值：初始选中的item下标
+#define kDefaultIndex       0   
+//默认值：下划线动画的时间
+#define kDefaultDuration    0.5
 
 @interface ZYGSegment ()
 {
@@ -23,15 +43,7 @@
 @implementation ZYGSegment
 
 ZYGSegment *segment;
-#pragma mark - 初始化
--(instancetype )init{
-    if (self = [super init]) {
-        //额外的操作
-        
-    }
-    return self;
-}
-
+#pragma mark - 创建segment
 +(instancetype )initSegment{
     segment = [[self alloc] init];
     return segment;
@@ -44,6 +56,34 @@ ZYGSegment *segment;
     [segment addItems:items];
     [view addSubview:segment];
     [self addSwipGestureIn:view];
+}
+#pragma mark - 初始化
+-(instancetype )init{
+    if (self = [super init]) {
+        //额外的操作 ....
+    }
+    return self;
+}
+-(instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        self.itemArray=[NSMutableArray array];
+        selectedIndex = kDefaultIndex;
+        self.titleFont = kTitleFont;
+        self.segmentBackgroundColor = kSegmentBackgroundColor;
+        self.titleColor = kTitleColor;
+        self.selectColor = kSelectedColor;
+        [self setBackgroundColor:self.segmentBackgroundColor];
+        //使用kvo监测属性值变化
+        [self addObserver:self forKeyPath:@"segmentBackgroundColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"backgroundColor"];
+        [self addObserver:self forKeyPath:@"titleColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleColor"];
+        [self addObserver:self forKeyPath:@"selectColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"selectColor"];
+        [self addObserver:self forKeyPath:@"titleFont" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleFont"];
+        [self addObserver:self forKeyPath:@"lineColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"lineColor"];
+        [self addObserver:self forKeyPath:@"segSubviews" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"viewsArr"];
+        [self addObserver:self forKeyPath:@"segSubControllers" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"subControllers"];
+    }
+    return self;
 }
 #pragma mark - 添加标题
 -(void)addItems:(NSArray *)items
@@ -61,7 +101,7 @@ ZYGSegment *segment;
         [button addTarget:self action:@selector(changeTheSegment:) forControlEvents:UIControlEventTouchUpInside];
         if (!lineView) {
             lineView=[[UIView alloc]initWithFrame:CGRectMake(i*titleWidth, self.bounds.size.height-2, titleWidth, 2)];
-            [lineView setBackgroundColor:[UIColor redColor]];
+            [lineView setBackgroundColor:kDefaultLineColor];
             [self addSubview:lineView];
         }
         [self addSubview:button];
@@ -74,12 +114,12 @@ ZYGSegment *segment;
     [self selectIndex:button.tag];
     buttonTag = (int)button.tag;
 }
-#pragma mark - 选中下标，供外部调用
+#pragma mark - 选中某个item，调用协议方法
 - (void)selectIndex:(NSInteger)index{
     if (selectedIndex!=index) {
         [self.itemArray[selectedIndex] setSelected:NO];
         [self.itemArray[index] setSelected:YES];
-        [UIView animateWithDuration:self.duration ? self.duration: 0.5 animations:^{
+        [UIView animateWithDuration:self.duration ? self.duration: kDefaultDuration animations:^{
             [lineView setFrame:CGRectMake(index*titleWidth,self.bounds.size.height-2, titleWidth, 2)];
         }];
         selectedIndex=index;
@@ -125,27 +165,6 @@ ZYGSegment *segment;
         responder = responder.nextResponder;
     }
     return (UIViewController *)responder;
-}
-#pragma mark - 初始化
--(instancetype)initWithFrame:(CGRect)frame
-{
-    if (self = [super initWithFrame:frame]) {
-        self.itemArray=[NSMutableArray array];
-        selectedIndex=0;
-        self.titleFont=[UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
-        self.segmentBackgroundColor=[UIColor colorWithRed:253.0f/255 green:239.0f/255 blue:230.0f/255 alpha:1.0f];
-        self.titleColor=[UIColor colorWithRed:77.0/255 green:77.0/255 blue:77.0/255 alpha:1.0f];
-        self.selectColor=[UIColor colorWithRed:233.0/255 green:97.0/255 blue:31.0/255 alpha:1.0f];
-        [self setBackgroundColor:self.segmentBackgroundColor];
-        [self addObserver:self forKeyPath:@"segmentBackgroundColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"backgroundColor"];
-        [self addObserver:self forKeyPath:@"titleColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleColor"];
-        [self addObserver:self forKeyPath:@"selectColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"selectColor"];
-        [self addObserver:self forKeyPath:@"titleFont" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleFont"];
-        [self addObserver:self forKeyPath:@"lineColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"lineColor"];
-        [self addObserver:self forKeyPath:@"segSubviews" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"viewsArr"];
-        [self addObserver:self forKeyPath:@"segSubControllers" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"subControllers"];
-    }
-    return self;
 }
 
 #pragma mark - 利用kvo监测属性值的变化
