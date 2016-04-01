@@ -9,3 +9,4 @@ This repository is used to storage some demos about segment. Maybe I will change
 6、支持每个item对应的view，只需要将自定义的view添加到segSubviews即可
 7、支持添加childViewController，以便于复杂逻辑的处理
 8、使用方便，对于定制要求不高的用户，实现一句代码搞定
+![image]{(https://github.com/ButBueatiful/dotvim/raw/master/screenshots/vim-screenshot.jpg)}
