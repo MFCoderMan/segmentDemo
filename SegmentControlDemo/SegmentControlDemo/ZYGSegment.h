@@ -46,7 +46,7 @@
  */
 @property (nonatomic, strong) NSMutableArray *segSubControllers;
 /**
- *  segment的背景色，不设置的话回采用默认值
+ *  segment的背景色，不设置的话会采用默认值
  */
 @property (strong, nonatomic) UIColor *segmentBackgroundColor;
 /**

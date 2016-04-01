@@ -26,14 +26,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    self.view.backgroundColor = [UIColor orangeColor];
+    //一句代码即可搞定
+//    [[ZYGSegment initSegment] addItems:@[@"标题0",@"标题1",@"标题2"] frame:CGRectMake(0, 264, self.view.frame.size.width, 34) inView:self.view];
     
-    NSLog(@"viewController:%@",self);
-    
-    //假设这是导航栏
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
-    view.backgroundColor = [UIColor orangeColor];
-    [self.view addSubview:view];
-    
+    //如果需要定制，可使用下面的方法
     //创建segment
     ZYGSegment *seg = [ZYGSegment initSegment];
     seg.delegate = self;
@@ -41,13 +38,13 @@
     
     /**
     * 说明：seg.segSubviews和seg.segSubControllers 可以根据需要进行设置，也可以不进行设置，
-    *      当不设置时，回调方法里面就是单纯的选中了某个item，可以根据需要自行设置操作
+    *      当不设置时，回调方法里面就是单纯的选中了某个item（这个时候要实现代理方法），可以根据需要自行设置操作
      *      当设置seg.segSubviews后，回调方法里面就是选中的view
      *      当设置seg.segSubControllers后，回调方法里面就是选中的controller的view
     * */
     
     //设置各个item对应的view,view可以设置frame，也可以不设置，不设置的话默认为从item的下面开始填充整个屏幕
-#if 1
+#if 0
     viewArr = [[NSMutableArray alloc] init];
     for (int i=0; i<3; i++) {
         UIView *view = [[UIView alloc] init];
@@ -80,18 +77,16 @@
     
 #endif
     //对segment属性自定义，可选，不设置的话采用默认属性
-//    seg.segmentBackgroundColor = [UIColor whiteColor];
-//    seg.titleColor = [UIColor blueColor];
-//    seg.selectColor = [UIColor redColor];
-//    seg.titleFont = [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
-//    seg.lineColor = [UIColor blackColor];
-//    seg.duration = 0.3;
-    
-    
+    seg.segmentBackgroundColor = [UIColor whiteColor];
+    seg.titleColor = [UIColor blueColor];
+    seg.selectColor = [UIColor redColor];
+    seg.titleFont = [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f];
+    seg.lineColor = [UIColor blackColor];
+    seg.duration = 0.3;
 }
 
 -(void)didSelectSegmentAtIndex:(NSInteger)selectedIndex{
-    kDLOG(@"%ld",selectedIndex);
+    kDLOG(@"选中：%ld",selectedIndex);
 }
 
 - (void)didReceiveMemoryWarning {

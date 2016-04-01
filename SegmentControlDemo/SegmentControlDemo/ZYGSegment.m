@@ -24,7 +24,7 @@
 //默认值：下划线颜色
 #define kDefaultLineColor   [UIColor redColor]
 //默认值：初始选中的item下标
-#define kDefaultIndex       0   
+#define kDefaultIndex       0
 //默认值：下划线动画的时间
 #define kDefaultDuration    0.5
 
@@ -47,15 +47,6 @@ ZYGSegment *segment;
 +(instancetype )initSegment{
     segment = [[self alloc] init];
     return segment;
-}
-#pragma mark - 供外部调用的方法
--(void)addItems:(NSArray *)items frame:(CGRect)frame inView:(UIView *)view{
-    backView = view;
-    tempFrame = frame;
-    segment.frame = frame;
-    [segment addItems:items];
-    [view addSubview:segment];
-    [self addSwipGestureIn:view];
 }
 #pragma mark - 初始化
 -(instancetype )init{
@@ -85,12 +76,19 @@ ZYGSegment *segment;
     }
     return self;
 }
+#pragma mark - 供外部调用的方法
+-(void)addItems:(NSArray *)items frame:(CGRect)frame inView:(UIView *)view{
+    backView = view;
+    tempFrame = frame;
+    segment.frame = frame;
+    [segment addItems:items];
+    [view addSubview:segment];
+    [self addSwipGestureIn:view];
+}
 #pragma mark - 添加标题
--(void)addItems:(NSArray *)items
-{
-    NSInteger seugemtNumber=items.count;
-    itemCount = (int) seugemtNumber;
-    titleWidth=(self.bounds.size.width)/seugemtNumber;
+-(void)addItems:(NSArray *)items{
+    itemCount = (int) items.count;
+    titleWidth=(self.bounds.size.width)/itemCount;
     for (int i=0; i<items.count; i++) {
         UIButton* button=[[UIButton alloc]initWithFrame:CGRectMake(i*titleWidth, 0, titleWidth, self.bounds.size.height-2)];
         [button setTitle:items[i] forState:UIControlStateNormal];
@@ -100,14 +98,19 @@ ZYGSegment *segment;
         [button setTag:i];
         [button addTarget:self action:@selector(changeTheSegment:) forControlEvents:UIControlEventTouchUpInside];
         if (!lineView) {
-            lineView=[[UIView alloc]initWithFrame:CGRectMake(i*titleWidth, self.bounds.size.height-2, titleWidth, 2)];
+            lineView=[[UIView alloc]initWithFrame:CGRectMake((kDefaultIndex < itemCount ? kDefaultIndex: 0) * titleWidth, self.bounds.size.height-2, titleWidth, 2)];
             [lineView setBackgroundColor:kDefaultLineColor];
             [self addSubview:lineView];
         }
         [self addSubview:button];
         [self.itemArray addObject:button];
     }
-    [[self.itemArray firstObject] setSelected:YES];
+    if (kDefaultIndex < itemCount) {
+        [self.itemArray[kDefaultIndex] setSelected:YES];
+    }else{
+        [[self.itemArray firstObject] setSelected:YES];
+    }
+    
 }
 -(void)changeTheSegment:(UIButton*)button
 {
@@ -117,45 +120,51 @@ ZYGSegment *segment;
 #pragma mark - 选中某个item，调用协议方法
 - (void)selectIndex:(NSInteger)index{
     if (selectedIndex!=index) {
-        [self.itemArray[selectedIndex] setSelected:NO];
-        [self.itemArray[index] setSelected:YES];
-        [UIView animateWithDuration:self.duration ? self.duration: kDefaultDuration animations:^{
-            [lineView setFrame:CGRectMake(index*titleWidth,self.bounds.size.height-2, titleWidth, 2)];
-        }];
-        selectedIndex=index;
-        if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSegmentAtIndex:)]) {
-            if (self.segSubviews && self.segSubviews.count) {
-                for (int i=0; i<=index; i++) {
-                    UIView *view = self.segSubviews[i];
-                    if (i != index) {
-                        [view removeFromSuperview];
-                    }else{
-                        if (!view.frame.size.height){
-                            view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
-                        }
-                        
-                        [backView addSubview:view];
+        [self handleSelectItemEventWith:index];
+    }
+}
+-(void)handleSelectItemEventWith:(NSInteger )index{
+    if (index > itemCount) {
+        return;
+    }
+    [self.itemArray[selectedIndex] setSelected:NO];
+    [self.itemArray[index] setSelected:YES];
+    [UIView animateWithDuration:self.duration ? self.duration: kDefaultDuration animations:^{
+        [lineView setFrame:CGRectMake(index*titleWidth,self.bounds.size.height-2, titleWidth, 2)];
+    }];
+    selectedIndex=index;
+    if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSegmentAtIndex:)]) {
+        if (self.segSubviews && self.segSubviews.count) {
+            for (int i=0; i<=index; i++) {
+                UIView *view = self.segSubviews[i];
+                if (i != index) {
+                    [view removeFromSuperview];
+                }else{
+                    if (!view.frame.size.height){
+                        view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
                     }
-                }
-            }else if (self.segSubControllers && self.segSubControllers.count){
-                for (int i=0; i<self.segSubControllers.count; i++) {
-                    UIViewController *vController = self.segSubControllers[i];
-                    if (i != index) {
-                        [vController.view removeFromSuperview];
-                    }else{
-                        vController.view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
-                        UIViewController *addedController = [self getController];
-                        [addedController addChildViewController:vController];
-                        [vController didMoveToParentViewController:addedController];
-                        [backView addSubview:vController.view];
-                        
-                    }
+                    
+                    [backView addSubview:view];
                 }
             }
-            [self.delegate didSelectSegmentAtIndex:selectedIndex];
-        }else{
-            kDLOG(@"代理未实现方法");
+        }else if (self.segSubControllers && self.segSubControllers.count){
+            for (int i=0; i<self.segSubControllers.count; i++) {
+                UIViewController *vController = self.segSubControllers[i];
+                if (i != index) {
+                    [vController.view removeFromSuperview];
+                }else{
+                    vController.view.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+                    UIViewController *addedController = [self getController];
+                    [addedController addChildViewController:vController];
+                    [vController didMoveToParentViewController:addedController];
+                    [backView addSubview:vController.view];
+                    
+                }
+            }
         }
+        [self.delegate didSelectSegmentAtIndex:selectedIndex];
+    }else{
+        kDLOG(@"代理未实现方法");
     }
 }
 #pragma mark - 获得把segment添加到界面的controller
@@ -182,13 +191,14 @@ ZYGSegment *segment;
         if (!selectedView.frame.size.height) {
             selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
         }
-        
+        [self handleSelectItemEventWith:kDefaultIndex];
     }
     if ([cate isEqualToString:@"subControllers"]) {
         UIViewController *vController = self.segSubControllers[0];
         UIView *selectedView = vController.view;
         selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
         [backView addSubview:selectedView];
+        [self handleSelectItemEventWith:kDefaultIndex];
     }
     for (UIButton *button in self.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {
@@ -237,7 +247,6 @@ ZYGSegment *segment;
             [self selectIndex:buttonTag];
         }
     }
-
 }
 
 @end
