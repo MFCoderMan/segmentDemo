@@ -30,6 +30,10 @@
 
 @interface ZYGSegment : UIView
 /**
+ *  自定义下标，需要在 addItems...方法后设置，否则程序会崩溃
+ */
+@property (nonatomic, assign) NSInteger  selectedIndex;
+/**
  *  当前类的代理对象，把要实现选择segment的类的对象设置成代理
  */
 @property (nonatomic, weak) id <ZYGSegmentControlDelegate> delegate;

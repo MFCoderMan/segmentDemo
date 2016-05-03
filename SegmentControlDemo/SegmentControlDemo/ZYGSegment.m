@@ -33,7 +33,7 @@
     UIView    *backView;//segment添加到的view
     UIView    *lineView;
     CGFloat    titleWidth;
-    NSInteger  selectedIndex;
+//    NSInteger  selectedIndex;
     int        itemCount;
     int        buttonTag;
     CGRect     tempFrame;//保存segment的frame
@@ -61,7 +61,7 @@ ZYGSegment *segment;
 {
     if (self = [super initWithFrame:frame]) {
         self.itemArray=[NSMutableArray array];
-        selectedIndex = kDefaultIndex;
+        self.selectedIndex = kDefaultIndex;
         self.titleFont = kTitleFont;
         self.segmentBackgroundColor = kSegmentBackgroundColor;
         self.titleColor = kTitleColor;
@@ -73,8 +73,9 @@ ZYGSegment *segment;
         [self addObserver:self forKeyPath:@"selectColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"selectColor"];
         [self addObserver:self forKeyPath:@"titleFont" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"titleFont"];
         [self addObserver:self forKeyPath:@"lineColor" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"lineColor"];
-        [self addObserver:self forKeyPath:@"segSubviews" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"viewsArr"];
+        [self addObserver:self forKeyPath:@"segSubviews" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"segSubviews"];
         [self addObserver:self forKeyPath:@"segSubControllers" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"subControllers"];
+        [self addObserver:self forKeyPath:@"selectedIndex" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@"selectedIndex"];
     }
     return self;
 }
@@ -156,7 +157,7 @@ ZYGSegment *segment;
     if (!selectedImageName) {
         return ;
     }
-    for (UIButton *btn in self.subviews) {
+    for (UIButton *btn in self.itemArray) {
         if (button.tag == btn.tag) {
             [btn setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateNormal];
             [btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -btn.titleLabel.intrinsicContentSize.width)];
@@ -170,7 +171,7 @@ ZYGSegment *segment;
 }
 #pragma mark - 选中某个item，调用协议方法
 - (void)selectIndex:(NSInteger)index{
-    if (selectedIndex!=index) {
+    if (self.selectedIndex != index) {
         [self handleSelectItemEventWith:index];
     }
 }
@@ -178,12 +179,15 @@ ZYGSegment *segment;
     if (index > itemCount) {
         return;
     }
-    [self.itemArray[selectedIndex] setSelected:NO];
+    [self.itemArray[self.selectedIndex] setSelected:NO];
     [self.itemArray[index] setSelected:YES];
     [UIView animateWithDuration:self.duration ? self.duration: kDefaultDuration animations:^{
         [lineView setFrame:CGRectMake(index*titleWidth,self.bounds.size.height-2, titleWidth, 2)];
     }];
-    selectedIndex=index;
+    if (self.selectedIndex != index) {
+        self.selectedIndex = index;
+    }
+    
     if (self.delegate && [self.delegate respondsToSelector:@selector(didSelectSegmentAtIndex:)]) {
         if (self.segSubviews && self.segSubviews.count) {
             for (int i=0; i<=index; i++) {
@@ -213,7 +217,7 @@ ZYGSegment *segment;
                 }
             }
         }
-        [self.delegate didSelectSegmentAtIndex:selectedIndex];
+        [self.delegate didSelectSegmentAtIndex:self.selectedIndex];
     }else{
         kDLOG(@"代理未实现方法");
     }
@@ -236,20 +240,22 @@ ZYGSegment *segment;
     if ([cate isEqualToString:@"lineColor"]) {
         [lineView setBackgroundColor:self.lineColor];
     }
-    if ([cate isEqualToString:@"viewsArr"]) {
-        UIView *selectedView = self.segSubviews[0];
-        [backView addSubview:selectedView];
-        if (!selectedView.frame.size.height) {
-            selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
-        }
-        [self handleSelectItemEventWith:kDefaultIndex];
+    if ([cate isEqualToString:@"segSubviews"]) {
+        [self resetViews];
     }
     if ([cate isEqualToString:@"subControllers"]) {
-        UIViewController *vController = self.segSubControllers[0];
-        UIView *selectedView = vController.view;
-        selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
-        [backView addSubview:selectedView];
-        [self handleSelectItemEventWith:kDefaultIndex];
+        [self resetControllers];
+    }
+    if ([cate isEqualToString:@"selectedIndex"]) {
+        UIButton *btn = self.itemArray[self.selectedIndex];
+        [self changeTheSegment:btn];
+        if (self.segSubviews.count) {
+            [self resetViews];
+        }else if (self.segSubControllers.count){
+            [self resetControllers];
+        }else{
+            [self handleSelectItemEventWith:self.selectedIndex];
+        }
     }
     for (UIButton *button in self.subviews) {
         if ([button isKindOfClass:[UIButton class]]) {
@@ -265,6 +271,24 @@ ZYGSegment *segment;
     }
     
 }
+//监测到属性值变化后重置界面
+-(void)resetViews{
+    NSInteger index = self.selectedIndex >= 0 ? self.selectedIndex: kDefaultIndex;
+    UIView *selectedView = self.segSubviews[index];
+    [backView addSubview:selectedView];
+    if (!selectedView.frame.size.height) {
+        selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+    }
+    [self handleSelectItemEventWith:index];
+}
+-(void)resetControllers{
+    NSInteger index = self.selectedIndex >= 0 ? self.selectedIndex: kDefaultIndex;
+    UIViewController *vController = self.segSubControllers[index];
+    UIView *selectedView = vController.view;
+    selectedView.frame = CGRectMake(tempFrame.origin.x, tempFrame.origin.y + tempFrame.size.height, tempFrame.size.width, backView.frame.size.height);
+    [backView addSubview:selectedView];
+    [self handleSelectItemEventWith:index];
+}
 #pragma mark - 移除观察者
 - (void)dealloc
 {
@@ -272,8 +296,9 @@ ZYGSegment *segment;
     [self removeObserver:self forKeyPath:@"titleColor" context:@"titleColor"];
     [self removeObserver:self forKeyPath:@"selectColor" context:@"selectColor"];
     [self removeObserver:self forKeyPath:@"titleFont" context:@"titleFont"];
-    [self removeObserver:self forKeyPath:@"viewsArr" context:@"viewsArr"];
+    [self removeObserver:self forKeyPath:@"segSubviews" context:@"segSubviews"];
     [self removeObserver:self forKeyPath:@"subControllers" context:@"subControllers"];
+    [self removeObserver:self forKeyPath:@"selectedIndex" context:@"selectedIndex"];
 }
 
 #pragma mark - 添加手势
