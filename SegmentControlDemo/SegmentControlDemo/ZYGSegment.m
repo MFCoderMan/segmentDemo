@@ -30,13 +30,15 @@
 
 @interface ZYGSegment ()
 {
-    UIView *backView;//segment添加到的view
-    CGFloat titleWidth;
-    UIView* lineView;
-    NSInteger selectedIndex;
-    int itemCount;
-    int buttonTag;
-    CGRect tempFrame;//保存segment的frame
+    UIView    *backView;//segment添加到的view
+    UIView    *lineView;
+    CGFloat    titleWidth;
+    NSInteger  selectedIndex;
+    int        itemCount;
+    int        buttonTag;
+    CGRect     tempFrame;//保存segment的frame
+    NSString  *nomalImageName;
+    NSString  *selectedImageName;
 }
 @end
 
@@ -85,6 +87,14 @@ ZYGSegment *segment;
     [view addSubview:segment];
     [self addSwipGestureIn:view];
 }
+-(void)addItemsWithFrame:(CGRect)frame titles:(NSArray *)titles selectedImage:(NSString *)selectedImage inView:(UIView *)view{
+    backView = view;
+    tempFrame = frame;
+    segment.frame = frame;
+    [segment addItems:titles selectedImage:selectedImage];
+    [view addSubview:segment];
+    [self addSwipGestureIn:view];
+}
 #pragma mark - 添加标题
 -(void)addItems:(NSArray *)items{
     itemCount = (int) items.count;
@@ -112,10 +122,51 @@ ZYGSegment *segment;
     }
     
 }
+-(void)addItems:(NSArray *)items selectedImage:(NSString *)selectedImage{
+    itemCount = (int) items.count;
+    titleWidth=(self.bounds.size.width)/itemCount;
+    selectedImageName = selectedImage;
+    for (int i=0; i<items.count; i++) {
+        UIButton* button=[[UIButton alloc]initWithFrame:CGRectMake(i * titleWidth, 0, titleWidth, self.bounds.size.height - 2)];
+        [button setTitle:items[i] forState:UIControlStateNormal];
+        [button.titleLabel setFont:self.titleFont];
+        [button setTitleColor:self.titleColor forState:UIControlStateNormal];
+        [button setTitleColor:self.selectColor forState:UIControlStateSelected];
+        
+        button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [button setTag:i];
+        [button addTarget:self action:@selector(changeTheSegment:) forControlEvents:UIControlEventTouchUpInside];
+        [self addSubview:button];
+        [self.itemArray addObject:button];
+    }
+    UIButton *nowButton = self.itemArray[kDefaultIndex];
+    [nowButton setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateNormal];
+    [nowButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -nowButton.titleLabel.intrinsicContentSize.width)];
+    [nowButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -nowButton.currentImage.size.width, 0, 0)];
+    if (kDefaultIndex < itemCount) {
+        [self.itemArray[kDefaultIndex] setSelected:YES];
+    }else{
+        [[self.itemArray firstObject] setSelected:YES];
+    }
+}
 -(void)changeTheSegment:(UIButton*)button
 {
     [self selectIndex:button.tag];
     buttonTag = (int)button.tag;
+    if (!selectedImageName) {
+        return ;
+    }
+    for (UIButton *btn in self.subviews) {
+        if (button.tag == btn.tag) {
+            [btn setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateNormal];
+            [btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -btn.titleLabel.intrinsicContentSize.width)];
+            [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.currentImage.size.width, 0, 0)];
+        }else{
+            [btn setImage:nil forState:UIControlStateNormal];
+            [btn setImageEdgeInsets:UIEdgeInsetsZero];
+            [btn setTitleEdgeInsets:UIEdgeInsetsZero];
+        }
+    }
 }
 #pragma mark - 选中某个item，调用协议方法
 - (void)selectIndex:(NSInteger)index{

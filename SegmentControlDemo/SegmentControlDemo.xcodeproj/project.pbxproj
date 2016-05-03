@@ -21,6 +21,7 @@
 		02A551E51C59B82100D6AD49 /* ViewController0.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E41C59B82100D6AD49 /* ViewController0.m */; };
 		02A551E81C59B83100D6AD49 /* ViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551E71C59B83100D6AD49 /* ViewController1.m */; };
 		02A551EB1C59B83B00D6AD49 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 02A551EA1C59B83B00D6AD49 /* ViewController2.m */; };
+		02EDF7B41CD865DA00F4C2C3 /* 2YY_btn_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 02EDF7B31CD865DA00F4C2C3 /* 2YY_btn_bg.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		02A551E71C59B83100D6AD49 /* ViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController1.m; sourceTree = "<group>"; };
 		02A551E91C59B83B00D6AD49 /* ViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController2.h; sourceTree = "<group>"; };
 		02A551EA1C59B83B00D6AD49 /* ViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController2.m; sourceTree = "<group>"; };
+		02EDF7B31CD865DA00F4C2C3 /* 2YY_btn_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2YY_btn_bg.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 		024782961C562E8D00A136B4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				02EDF7B31CD865DA00F4C2C3 /* 2YY_btn_bg.png */,
 				024782971C562E8D00A136B4 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -281,6 +284,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02EDF7B41CD865DA00F4C2C3 /* 2YY_btn_bg.png in Resources */,
 				024782A61C562E8D00A136B4 /* LaunchScreen.storyboard in Resources */,
 				024782A31C562E8D00A136B4 /* Assets.xcassets in Resources */,
 				024782A11C562E8D00A136B4 /* Main.storyboard in Resources */,

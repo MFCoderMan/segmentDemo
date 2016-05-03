@@ -83,6 +83,13 @@
  *  @param view  segment要添加的view
  */
 -(void)addItems:(NSArray *)items frame:(CGRect )frame inView:(UIView *)view;
-
-
+/**
+ *  选中时有图片的接口
+ *
+ *  @param frame         segment的frame
+ *  @param titles        标题数组
+ *  @param selectedImage 选中的图片
+ *  @param view          要添加到的view
+ */
+-(void)addItemsWithFrame:(CGRect)frame titles:(NSArray *)titles selectedImage:(NSString *)selectedImage inView:(UIView *)view;
 @end
