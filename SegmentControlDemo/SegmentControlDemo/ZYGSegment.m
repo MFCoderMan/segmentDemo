@@ -18,7 +18,7 @@
 //默认值：未选中时字体的颜色
 #define  kTitleColor      [UIColor colorWithRed:77.0/255 green:77.0/255 blue:77.0/255 alpha:1.0f]
 //默认值：选中时字体的颜色
-#define  kSelectedColor   [UIColor colorWithRed:33.0/255 green:97.0/255 blue:31.0/255 alpha:1.0f]
+#define  kSelectedColor   [UIColor colorWithRed:233.0/255 green:97.0/255 blue:31.0/255 alpha:1.0f]
 //默认值：字体的大小
 #define kTitleFont        [UIFont fontWithName:@".Helvetica Neue Interface" size:14.0f]
 //默认值：下划线颜色
@@ -154,18 +154,26 @@ ZYGSegment *segment;
 {
     [self selectIndex:button.tag];
     buttonTag = (int)button.tag;
-    if (!selectedImageName) {
-        return ;
-    }
     for (UIButton *btn in self.itemArray) {
-        if (button.tag == btn.tag) {
-            [btn setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateNormal];
-            [btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -btn.titleLabel.intrinsicContentSize.width)];
-            [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.currentImage.size.width, 0, 0)];
+        if (button == btn) {
+            if (selectedImageName) {
+                [btn setImage:[UIImage imageNamed:selectedImageName] forState:UIControlStateNormal];
+                [btn setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -btn.titleLabel.intrinsicContentSize.width)];
+                [btn setTitleEdgeInsets:UIEdgeInsetsMake(0, -btn.currentImage.size.width, 0, 0)];
+            }else{
+                [btn setTitleColor:self.titleColor forState:UIControlStateNormal];
+                [btn setTitleColor:self.selectColor forState:UIControlStateSelected];
+            }
         }else{
-            [btn setImage:nil forState:UIControlStateNormal];
-            [btn setImageEdgeInsets:UIEdgeInsetsZero];
-            [btn setTitleEdgeInsets:UIEdgeInsetsZero];
+            btn.selected = NO;
+            if (selectedImageName) {
+                [btn setImage:nil forState:UIControlStateNormal];
+                [btn setImageEdgeInsets:UIEdgeInsetsZero];
+                [btn setTitleEdgeInsets:UIEdgeInsetsZero];
+            }else{
+                [btn setTitleColor:self.titleColor forState:UIControlStateNormal];
+                [btn setTitleColor:self.selectColor forState:UIControlStateSelected];
+            }
         }
     }
 }

@@ -39,9 +39,9 @@
     //[self simpleUse];
     //[self usage];
     //[self viewsUse];
-    [self controllersUse];
+    //[self controllersUse];
     //[self imageWithViews];
-    //[self imageWithController];
+    [self imageWithController];
     
     
     
